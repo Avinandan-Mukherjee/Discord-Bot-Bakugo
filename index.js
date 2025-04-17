@@ -21,9 +21,27 @@ const schema = require('./schema');
 const mongoose = require("mongoose");  
 
 
-mongoose.connect(process.env.mongoConnect)
-  .then(() => console.log("Connected to MongoDB ✔️"))
-  .catch(err => console.error("MongoDB connection error:", err))
+mongoose.connect(process.env.mongoConnect, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  retryWrites: true,
+  w: "majority"
+})
+.then(() => console.log("Connected to MongoDB ✔️"))
+.catch(err => {
+  console.error("MongoDB connection error:", err);
+  // Continue bot startup even if MongoDB fails
+  startBot();
+});
+
+function startBot() {
+  shooter.login(process.env.token).catch(err => {
+    console.error("Bot login error:", err);
+  });
+}
+
+// Call startBot if MongoDB connects successfully
+mongoose.connection.once('connected', startBot);
 
 
 
