@@ -11,7 +11,7 @@ const port = 3000;
 
 app.get("/", (req, res) => res.send("Bot Is Online"));
 
-app.listen(port, () => console.log("Example App: localhost:3000"))
+app.listen(port, '0.0.0.0', () => console.log(`Server running on port ${port}`))
 
 const collection = new Collection();
 const config = require("./config.json");
@@ -21,10 +21,9 @@ const schema = require('./schema');
 const mongoose = require("mongoose");  
 
 
-mongoose.connect(process.env.mongoConnect, { 
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-}).then(console.log("Connected to Mongo db ✔️"))
+mongoose.connect(process.env.mongoConnect)
+  .then(() => console.log("Connected to MongoDB ✔️"))
+  .catch(err => console.error("MongoDB connection error:", err))
 
 
 
