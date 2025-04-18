@@ -72,17 +72,18 @@ const { DisTube } = require("distube");
 const { SpotifyPlugin } = require("@distube/spotify");
 const { SoundCloudPlugin } = require("@distube/soundcloud");
 const { YtDlpPlugin } = require("@distube/yt-dlp");
+const { VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
 
+// Initialize DisTube before using it
 shooter.distube = new DisTube(shooter, {
-  leaveOnStop: false,
+  searchSongs: 0,
+  searchCooldown: 30,
+  leaveOnEmpty: true,
+  emptyCooldown: 0,
   leaveOnFinish: false,
-  emitNewSongOnly: true,
-  emitAddSongWhenCreatingQueue: false,
-  emitAddListWhenCreatingQueue: false,
+  leaveOnStop: false,
   plugins: [
-    new SpotifyPlugin({
-      emitEventsAfterFetching: true
-    }),
+    new SpotifyPlugin(),
     new SoundCloudPlugin(),
     new YtDlpPlugin()
   ]
