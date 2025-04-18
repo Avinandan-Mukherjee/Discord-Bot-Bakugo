@@ -74,9 +74,11 @@ const { SoundCloudPlugin } = require("@distube/soundcloud");
 const { YtDlpPlugin } = require("@distube/yt-dlp");
 
 shooter.distube = new DisTube(shooter, {
-  leaveOnStop: false,
+  searchSongs: 0,
+  searchCooldown: 30,
+  leaveOnEmpty: true,
   leaveOnFinish: false,
-  emitNewSongOnly: true,
+  leaveOnStop: false,
   plugins: [
     new SpotifyPlugin(),
     new SoundCloudPlugin(),
