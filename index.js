@@ -68,54 +68,7 @@ module.exports = shooter;
 
 
 
-const { DisTube } = require("distube");
-const { SpotifyPlugin } = require("@distube/spotify");
-const { SoundCloudPlugin } = require("@distube/soundcloud");
-const { YtDlpPlugin } = require("@distube/yt-dlp");
-
-shooter.distube = new DisTube(shooter, {
-  emitNewSongOnly: true,
-  leaveOnFinish: false,
-  leaveOnStop: false,
-  leaveOnEmpty: true,
-  plugins: [
-    new SpotifyPlugin({
-      parallel: true,
-      emitEventsAfterFetching: false,
-    }),
-    new SoundCloudPlugin(),
-    new YtDlpPlugin()
-  ]
-});
-
-shooter.distube.setMaxListeners(20);
-
-shooter.distube
-  .on('playSong', (queue, song) => {
-
-    const gdm = new MessageEmbed()
-      .setTitle("Now Playing...")
-      .setDescription(`[${song.name}](${song.url})`)
-      .setColor("#FF0000")
-      .setFooter(`Added by ${song.user.username}`)
-    queue.textChannel.send({ embeds: [gdm] })
-  })
-
-
-
-
-  .on('addSong', (queue, song) => {
-    const gdm1 = new MessageEmbed()
-      .setDescription(`Successfully added [${song.name}](${song.url}) - \`${song.formattedDuration}\`  to the queue. Requested by ${song.user}`)
-      .setColor("#3BFF00")
-    queue.textChannel.send({ embeds: [gdm1] })
-  })
-  .on('error', (textChannel, e) => {
-    console.error(e)
-    textChannel.send({ content: `An error occured: ${e}` })
-
-
-  })
+// Music functionality removed to prevent errors
 
 
 
