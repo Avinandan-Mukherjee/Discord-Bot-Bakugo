@@ -68,10 +68,21 @@ module.exports = shooter;
 
 
 
-const distube = require("distube");
-shooter.distube = new distube.default(shooter, {
-  searchSongs: 1, emitNewSongOnly: true
-})
+const { DisTube } = require("distube");
+const { SpotifyPlugin } = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
+const { YtDlpPlugin } = require("@distube/yt-dlp");
+
+shooter.distube = new DisTube(shooter, {
+  leaveOnStop: false,
+  leaveOnFinish: false,
+  emitNewSongOnly: true,
+  plugins: [
+    new SpotifyPlugin(),
+    new SoundCloudPlugin(),
+    new YtDlpPlugin()
+  ]
+});
 
 shooter.distube
   .on('playSong', (queue, song) => {

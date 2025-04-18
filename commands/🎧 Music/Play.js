@@ -1,3 +1,4 @@
+
 const Discord = require("discord.js");
 
 module.exports = {
@@ -6,12 +7,24 @@ module.exports = {
   description: "Play a song",
 
   run: async (shooter, message, args) => {
-    if(!message.member.voice.channel) return message.reply({content: "You need to Join a Voice Channel first"})
+    if(!message.member.voice.channel) {
+      return message.reply({content: "You need to join a voice channel first!"});
+    }
 
-    const music = args.join(" ")
-    if(!music) return message.channel.send({content: "What is the name of the song?"})
+    const music = args.join(" ");
+    if(!music) {
+      return message.channel.send({content: "Please provide a song name or URL!"});
+    }
 
-    await shooter.distube.play(message, music)
-
+    try {
+      await shooter.distube.play(message.member.voice.channel, music, {
+        member: message.member,
+        textChannel: message.channel,
+        message
+      });
+    } catch (err) {
+      message.channel.send({content: `Error: ${err.message}`});
+      console.error(err);
+    }
   }
 }
