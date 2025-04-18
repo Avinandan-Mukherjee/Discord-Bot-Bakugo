@@ -39,6 +39,7 @@ mongoose.connect(process.env.mongoConnect, {
     startBot();
   });
 
+
 function startBot() {
   shooter.login(process.env.token).catch(err => {
     console.error("Bot login error:", err);
