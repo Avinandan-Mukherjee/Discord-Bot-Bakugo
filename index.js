@@ -22,12 +22,17 @@ const mongoose = require("mongoose");
 
 
 mongoose.connect(process.env.mongoConnect, {
+  dbName: 'yourdbname', // Replace with your database name
   useNewUrlParser: true,
   useUnifiedTopology: true,
   retryWrites: true,
   w: "majority"
 })
-  .then(() => console.log("Connected to MongoDB ✔️"))
+  .then(() => {
+    console.log("Connected to MongoDB ✔️");
+    // Start the bot after successful DB connection
+    shooter.login(process.env.token);
+  })
   .catch(err => {
     console.error("MongoDB connection error:", err);
     // Continue bot startup even if MongoDB fails
@@ -130,74 +135,3 @@ shooter.rmv = (id, coins) => {
     data.save();
   })
 }
-
-
-
-
-/*shooter.bal = (id) => new Promise(async ful => {
-  const data = await schema.findOne({ id });
-  if (!data) return ful(0);
-  ful(data.coins);
-})
-
-shooter.add = (id, coins) => {
-  schema.findOne({ id }, async (err, data) => {
-    if (err) throw err;
-    if (data) {
-      data.coins += coins;
-    } else {
-      data = new schema({ id, coins })
-    }
-    data.save();
-  })
-}
-
-shooter.rmv = (id, coins) => {
-  schema.findOne({ id }, async (err, data) => {
-    if (err) throw err;
-    if (data) {
-      data.coins -= coins;
-    } else {
-      data = new schema({ id, coins: -coins })
-    }
-    data.save();
-  })
-}
-
-shooter.mlt = (id, coins) => {
-  schema.findOne({ id }, async (err, data) => {
-    if (err) throw err;
-    if (data) {
-      data.coins += coins * 2;
-    } else {
-      data = new schema({ id, coins })
-    }
-    data.save();
-  })
-}
-
-shooter.login(process.env.token)
-
-//const { MongoClient } = require('mongodb');
-
-// Connection URL
-//const url = 'mongodb://cluster0.dwxc1.mongodb.net:27017';
-
-// Database Name
-//const dbName = 'yourDatabaseName'; // Replace 'yourDatabaseName' with your actual database name
-
-// Use connect method to connect to the server
-//MongoClient.connect(url, function(err, client) {
-  //if (err) {
-  //  console.error('Error connecting to MongoDB:', err);
-  //  return;
-  //}
-
-  //console.log('Connected successfully to MongoDB server');
-
- // const db = client.db(dbName);
-  // Perform your MongoDB operations here
-
-  //client.close();
-//});
-// run = "node index.js"*/
