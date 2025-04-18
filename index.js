@@ -77,13 +77,18 @@ shooter.distube = new DisTube(shooter, {
   leaveOnStop: false,
   leaveOnFinish: false,
   emitNewSongOnly: true,
-  nsfw: true,
+  emitAddSongWhenCreatingQueue: false,
+  emitAddListWhenCreatingQueue: false,
   plugins: [
-    new SpotifyPlugin(),
+    new SpotifyPlugin({
+      emitEventsAfterFetching: true
+    }),
     new SoundCloudPlugin(),
     new YtDlpPlugin()
   ]
 });
+
+shooter.distube.setMaxListeners(20);
 
 shooter.distube
   .on('playSong', (queue, song) => {

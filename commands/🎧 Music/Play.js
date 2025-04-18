@@ -20,11 +20,10 @@ module.exports = {
       await shooter.distube.play(message.member.voice.channel, music, {
         member: message.member,
         textChannel: message.channel,
-        message
       });
     } catch (err) {
-      message.channel.send({content: `Error: ${err.message}`});
       console.error(err);
+      return message.channel.send({content: `Error: ${err.message}`});
     }
   }
 }
