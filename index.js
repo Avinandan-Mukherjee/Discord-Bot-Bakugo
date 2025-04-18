@@ -7,7 +7,7 @@ const shooter = new Client({
 
 const express = require("express");
 const app = express();
-const port = 3000;                                
+const port = 3000;
 
 app.get("/", (req, res) => res.send("Bot Is Online"));
 
@@ -18,7 +18,7 @@ const config = require("./config.json");
 shooter.config = config;
 
 const schema = require('./schema');
-const mongoose = require("mongoose");  
+const mongoose = require("mongoose");
 
 
 mongoose.connect(process.env.mongoConnect, {
@@ -27,12 +27,12 @@ mongoose.connect(process.env.mongoConnect, {
   retryWrites: true,
   w: "majority"
 })
-.then(() => console.log("Connected to MongoDB ✔️"))
-.catch(err => {
-  console.error("MongoDB connection error:", err);
-  // Continue bot startup even if MongoDB fails
-  startBot();
-});
+  .then(() => console.log("Connected to MongoDB ✔️"))
+  .catch(err => {
+    console.error("MongoDB connection error:", err);
+    // Continue bot startup even if MongoDB fails
+    startBot();
+  });
 
 function startBot() {
   shooter.login(process.env.token).catch(err => {
@@ -94,6 +94,43 @@ shooter.distube
 
 
   })
+
+
+
+
+
+
+shooter.bal = (id) => new Promise(async ful => {
+  const data = await schema.findOne({ id });
+  if (!data) return ful(0);
+  ful(data.coins);
+})
+
+
+shooter.add = (id, coins) => {
+  schema.findOne({ id }, async (err, data) => {
+    if (err) throw err;
+    if (data) {
+      data.coins += coins;
+    } else {
+      data = new schema({ id, coins })
+    }
+    data.save();
+  })
+}
+
+shooter.rmv = (id, coins) => {
+  schema.findOne({ id }, async (err, data) => {
+    if (err) throw err;
+    if (data) {
+      data.coins -= coins;
+    } else {
+      data = new schema({ id, coins: -coins })
+    }
+    data.save();
+  })
+}
+
 
 
 
